@@ -13,7 +13,7 @@ Application d'apprentissage du vocabulaire néerlandais (liste Selor, art. 11bis
 
 ## Mise en ligne
 
-Hostinger (hPanel > Avancé > Git) copie ce dépôt dans `public_html/outils/vocabulaire` à chaque envoi sur `main`. Chaque version porte une étiquette (`v4.2`, `v4.3`, `v4.4`, `v5.0`…). La version en ligne est visible dans le code de la page : `<meta name="app-version">`.
+Hostinger (hPanel > Avancé > Git) copie ce dépôt dans `public_html/outils/vocabulaire` à chaque envoi sur `main`. Chaque version est un commit nommé « Vocabulaire vX.Y » (historique depuis la v4.2). La version en ligne est visible dans le code de la page : `<meta name="app-version">`.
 
 ## Synchronisation (à partir de la v5.0)
 

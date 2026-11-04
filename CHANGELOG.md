@@ -6,7 +6,7 @@
 - `vocabulaire-index-v5.0-2026-11-04.html` → à renommer `index.html` ;
 - `vocabulaire-redirect-v5.0-2026-11-04.html` → à renommer `redirect.html` (page de retour de la connexion Microsoft, ne rien y ajouter).
 
-**Mise en ligne par GitHub (à partir de cette version) :** dépôt privé `BenoitKreins/oneclient-vocabulaire`, branche `main`. Hostinger copie le dépôt dans `public_html/outils/vocabulaire` à chaque envoi. Dans le dépôt, les fichiers portent déjà leur nom en ligne (`index.html`, `redirect.html`), et chaque version a son étiquette (`v4.2` … `v5.0`).
+**Mise en ligne par GitHub (à partir de cette version) :** dépôt privé `BenoitKreins/oneclient-vocabulaire`, branche `main`. Hostinger copie le dépôt dans `public_html/outils/vocabulaire` à chaque envoi. Dans le dépôt, les fichiers portent déjà leur nom en ligne (`index.html`, `redirect.html`), et chaque version est un commit nommé « Vocabulaire vX.Y » (historique depuis la v4.2).
 
 **Supabase :** aucun changement. L'application ne l'utilise plus (arrêt prévu en phase 7).
 **Azure :** l'API `oneclient-apps-api` v1.0.1 doit être en ligne (`/api/health`).
