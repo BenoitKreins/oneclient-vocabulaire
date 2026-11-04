@@ -1,5 +1,15 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.1 — 2026-11-04 (avec l'API OneClient Apps v1.2.0)
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
+
+- Nouveau bouton « Supprimer mon compte » (Réglages > Compte) : efface les données en ligne et le compte de connexion Microsoft (adresse e-mail et mot de passe). Avant, il fallait écrire à l'adresse de contact. La copie de l'appareil est conservée et l'application repasse en mode local.
+- « Supprimer mes données en ligne » reste disponible pour effacer les données sans fermer le compte.
+- Si la suppression du compte n'est pas encore active côté serveur, un message le dit et renvoie vers l'adresse de contact.
+- Reprend le réveil de l'API de la v5.0.4.
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.1 — 2026-11-04">` et `APP_VERSION = "5.1"`.
+
 ## v5.0.4 — 2026-11-04
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
