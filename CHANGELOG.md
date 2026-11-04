@@ -1,5 +1,14 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.0.4 — 2026-11-04
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
+
+- Envoi des codes depuis no-reply@oneclient.be plus fiable : l'application « réveille » l'API (appel à `/api/health`) à l'ouverture de la page Compte et au clic sur « Activer la synchronisation » ou « Se reconnecter ». Quand Entra demande ensuite à l'API d'envoyer le code (inscription, mot de passe oublié), elle a eu le temps de démarrer. Sans réveil, un démarrage à froid dépassait les 2 secondes accordées par Entra, et le code partait depuis l'adresse Microsoft.
+- Au plus un réveil toutes les 2 minutes. La requête part même si la page est quittée juste après (keepalive). Aucun coût supplémentaire notable.
+- Alternative évaluée et écartée pour l'instant : une instance toujours prête (environ 6,6 $ par mois à 512 Mo, 26 $ à 2048 Mo, calculateur Azure du 4 novembre 2026).
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.0.4 — 2026-11-04">` et `APP_VERSION = "5.0.4"`.
+
 ## v5.0.3 — 2026-11-04
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.

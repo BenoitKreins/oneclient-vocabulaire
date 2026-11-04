@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr" class="h-full bg-slate-50">
 <head>
-  <meta name="app-version" content="Vocabulaire 5.0.3 — 2026-11-04">
+  <meta name="app-version" content="Vocabulaire 5.0.4 — 2026-11-04">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vocabulaire</title>
@@ -686,7 +686,7 @@ const DutchG2P = (function () {
 if (typeof module !== "undefined") module.exports = DutchG2P;
 
 
-  const APP_VERSION = "5.0.3";
+  const APP_VERSION = "5.0.4";
   const SPEAKER_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>';
   const OFFICIAL_LIST_ID = "official";
 
@@ -2015,6 +2015,15 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
   function appUrl() { return location.protocol.startsWith("http") ? location.origin + location.pathname : null; }
   // Langue de la page Microsoft : code complet + marché, comme dans la doc d'Entra External ID (ui_locales=de-DE&mkt=de-DE)
   function msLocale() { const l = AppState.uiLang === "nl" ? "nl-NL" : "fr-FR"; return { ui_locales: l, mkt: l }; }
+  // Réveiller l'API (démarrage à froid) avant d'envoyer la personne chez Microsoft :
+  // Entra n'attend que 2 secondes quand il demande à l'API d'envoyer un code (inscription, mot de passe oublié).
+  // keepalive : la requête part même si la page est quittée juste après. Au plus une fois toutes les 2 minutes.
+  let lastWake = 0;
+  function wakeApi() {
+    if (Date.now() - lastWake < 120000 || !location.protocol.startsWith("http")) return;
+    lastWake = Date.now();
+    try { fetch(API_ROOT + "/health", { mode: "no-cors", keepalive: true, cache: "no-store" }).catch(() => {}); } catch (e) {}
+  }
   function redirectUrl() {
     // …/vocabulaire, …/vocabulaire/ et …/vocabulaire/index.html renvoient tous vers …/vocabulaire/redirect.html
     let path = location.pathname;
@@ -2319,6 +2328,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
   function errCode(e) { return e ? " (" + (e.errorCode || e.name || "erreur") + (e.subError ? " / " + e.subError : "") + ")" : ""; }
   async function enableSync() {
     msg("accLocalMsg", "");
+    wakeApi();
     if (Cloud.ready) { try { await Cloud.ready; } catch (e) {} } // attendre la fin de l'initialisation de la connexion Microsoft
     if (Cloud.unavailable || !Cloud.msal) return msg("accLocalMsg", Cloud.unavailable ? t("sync_needs_web") : t("cloud_unavailable") + errCode(Cloud.initError));
     persist();
@@ -2327,6 +2337,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
     } catch (e) { console.warn(e); msg("accLocalMsg", t("cloud_unavailable") + errCode(e)); }
   }
   async function reconnect() {
+    wakeApi();
     if (Cloud.ready) { try { await Cloud.ready; } catch (e) {} }
     if (!Cloud.msal) return showToast(t("cloud_unavailable") + errCode(Cloud.initError), 6000);
     const req = { scopes: [AUTH_CFG.scope], extraQueryParameters: msLocale() };
@@ -2378,6 +2389,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
   }
   const CONTACT_EMAIL = "benoit.kreins@oneclient.be"; // contact affiché dans la page Compte
   function renderAccountSection() {
+    if (!Cloud.isOn() || Cloud.status === "reauth") wakeApi(); // la page Compte précède souvent une connexion
     const on = !!(Cloud.meta && Cloud.meta.enabled);
     document.getElementById("accLocal").classList.toggle("hidden", on);
     document.getElementById("accSynced").classList.toggle("hidden", !on);
