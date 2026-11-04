@@ -1,5 +1,12 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.0.3 — 2026-11-04
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
+
+- Langue de la page Microsoft : l'application envoie maintenant le code complet et le marché (`ui_locales=nl-NL&mkt=nl-NL`, ou `fr-FR`), comme dans la documentation d'Entra External ID. Avec le code court (`nl`), la page s'affichait dans la langue du navigateur.
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.0.3 — 2026-11-04">` et `APP_VERSION = "5.0.3"`.
+
 ## v5.0.2 — 2026-11-04
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
