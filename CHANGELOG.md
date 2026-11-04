@@ -1,5 +1,15 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.0.1 — 2026-11-04
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change. `redirect.html` reste en v5.0.
+**Supabase / Azure :** aucun changement.
+
+- Correction : « Activer la synchronisation » attend la fin de l'initialisation de la connexion Microsoft. Avant, un clic trop rapide après l'ouverture de la page affichait « Impossible d'initialiser la connexion au serveur ».
+- Diagnostic : si la connexion Microsoft ne s'initialise vraiment pas, le message affiche maintenant le code de l'erreur entre parenthèses (par exemple `endpoints_resolution_error` quand la page Microsoft est injoignable ou bloquée par le navigateur).
+- Même chose pour le bouton « Se reconnecter ».
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.0.1 — 2026-11-04">` et `APP_VERSION = "5.0.1"`.
+
 ## v5.0 — 2026-11-04 (avec l'API OneClient Apps v1.0.1)
 
 **Fichiers à envoyer dans `/outils/vocabulaire/` :**

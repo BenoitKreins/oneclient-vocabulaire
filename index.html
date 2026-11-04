@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr" class="h-full bg-slate-50">
 <head>
-  <meta name="app-version" content="Vocabulaire 5.0 — 2026-11-04">
+  <meta name="app-version" content="Vocabulaire 5.0.1 — 2026-11-04">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vocabulaire</title>
@@ -686,7 +686,7 @@ const DutchG2P = (function () {
 if (typeof module !== "undefined") module.exports = DutchG2P;
 
 
-  const APP_VERSION = "5.0";
+  const APP_VERSION = "5.0.1";
   const SPEAKER_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>';
   const OFFICIAL_LIST_ID = "official";
 
@@ -1086,7 +1086,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
     const imported = importPreviousVersion();
     bootUser({ id: LOCAL_UID, email: loadSyncMeta().enabled ? loadSyncMeta().email : "" });
     if (imported === "v4") showToast(t("toast_migrated_v4"), 6000); else if (imported) showToast(t("toast_migrated"), 5000);
-    Cloud.init();
+    Cloud.ready = Cloud.init();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", startApp); else startApp();
 
@@ -2092,6 +2092,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
           else this.setStatus("reauth");
         } else this.setStatus("local");
       } catch (e) {
+        this.initError = e;
         console.warn("Connexion Microsoft indisponible :", e);
         this.setStatus(this.meta.enabled ? "error" : "local");
       }
@@ -2312,19 +2313,23 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
   function clearAuthErrors() {}
   function hideAuthScreen() {}
 
+  // code court de l'erreur, affiché à côté du message pour pouvoir la diagnostiquer
+  function errCode(e) { return e ? " (" + (e.errorCode || e.name || "erreur") + (e.subError ? " / " + e.subError : "") + ")" : ""; }
   async function enableSync() {
     msg("accLocalMsg", "");
-    if (Cloud.unavailable || !Cloud.msal) return msg("accLocalMsg", t(Cloud.unavailable ? "sync_needs_web" : "cloud_unavailable"));
+    if (Cloud.ready) { try { await Cloud.ready; } catch (e) {} } // attendre la fin de l'initialisation de la connexion Microsoft
+    if (Cloud.unavailable || !Cloud.msal) return msg("accLocalMsg", Cloud.unavailable ? t("sync_needs_web") : t("cloud_unavailable") + errCode(Cloud.initError));
     persist();
     try {
       await Cloud.msal.loginRedirect({ scopes: [AUTH_CFG.scope], extraQueryParameters: { ui_locales: AppState.uiLang === "nl" ? "nl" : "fr" } });
-    } catch (e) { console.warn(e); msg("accLocalMsg", t("cloud_unavailable")); }
+    } catch (e) { console.warn(e); msg("accLocalMsg", t("cloud_unavailable") + errCode(e)); }
   }
   async function reconnect() {
-    if (!Cloud.msal) return;
+    if (Cloud.ready) { try { await Cloud.ready; } catch (e) {} }
+    if (!Cloud.msal) return showToast(t("cloud_unavailable") + errCode(Cloud.initError), 6000);
     const req = { scopes: [AUTH_CFG.scope], extraQueryParameters: { ui_locales: AppState.uiLang === "nl" ? "nl" : "fr" } };
     try { if (Cloud.account) await Cloud.msal.acquireTokenRedirect(Object.assign({ account: Cloud.account }, req)); else await Cloud.msal.loginRedirect(req); }
-    catch (e) { console.warn(e); showToast(t("cloud_unavailable"), 5000); }
+    catch (e) { console.warn(e); showToast(t("cloud_unavailable") + errCode(e), 6000); }
   }
   // Se déconnecter = arrêter la synchronisation sur cet appareil. Les données restent ici.
   async function logout() {
