@@ -1,5 +1,13 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.0.2 — 2026-11-04
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
+**Supabase / Azure :** aucun changement.
+
+- Correction : « Activer la synchronisation » échouait avec `endpoints_resolution_error`. La bibliothèque de connexion Microsoft (MSAL 5) vérifie que l'émetteur annoncé par l'annuaire correspond à l'adresse de connexion configurée. L'annuaire externe annonce un émetteur basé sur son identifiant (`https://<ID>.ciamlogin.com/<ID>/v2.0`), qui ne correspondait pas à l'adresse configurée par son nom (`oneclientapps.onmicrosoft.com`). L'adresse de connexion utilise maintenant l'ID de l'annuaire.
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.0.2 — 2026-11-04">` et `APP_VERSION = "5.0.2"`.
+
 ## v5.0.1 — 2026-11-04
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change. `redirect.html` reste en v5.0.

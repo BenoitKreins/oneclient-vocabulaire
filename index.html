@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr" class="h-full bg-slate-50">
 <head>
-  <meta name="app-version" content="Vocabulaire 5.0.1 — 2026-11-04">
+  <meta name="app-version" content="Vocabulaire 5.0.2 — 2026-11-04">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vocabulaire</title>
@@ -686,7 +686,7 @@ const DutchG2P = (function () {
 if (typeof module !== "undefined") module.exports = DutchG2P;
 
 
-  const APP_VERSION = "5.0.1";
+  const APP_VERSION = "5.0.2";
   const SPEAKER_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>';
   const OFFICIAL_LIST_ID = "official";
 
@@ -1998,7 +1998,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
   // Rien ici n'est secret : ce sont des identifiants publics d'application, pas des mots de passe.
   const AUTH_CFG = {
     clientId: "f1c47377-ff84-469d-8664-d19826df7945",            // application « Vocabulaire » (annuaire OneClient Apps)
-    authority: "https://oneclientapps.ciamlogin.com/",
+    authority: "https://oneclientapps.ciamlogin.com/0924ba5e-a4ee-4b8a-81d9-f4d35b3bde6a/",   // ID de l'annuaire : MSAL 5 vérifie que l'émetteur du document de configuration correspond à l'autorité
     knownAuthority: "oneclientapps.ciamlogin.com",
     scope: "api://ba80a8af-df8c-47f6-aeba-1d3dc311df6d/sync"     // API « OneClient Apps API »
   };
