@@ -1,5 +1,19 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.2 — 2026-11-04
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
+**API :** aucun changement (v1.2.0).
+
+- Nouvelle liste intégrée « Vocabulaire courant B1–B2 » (NL : « Algemene woordenschat B1–B2 ») : 263 termes, à côté du syllabus 11bis.
+  - Noms avec leur article (de/het), traduction française avec article, une phrase d'exemple en néerlandais et sa traduction française, une catégorie (Travail, Santé, Économie…).
+  - Liste relue à partir de la liste fournie (268 lignes) : 5 doublons retirés (ervaring, invloed, uitzondering, advies, veiligheid). Articles corrigés : *het* succes, *het* recept. Corrections : de pijn (au lieu de « de pijnen »), mislukken (au lieu de « misbreken »), vaag (au lieu de « vage »), « Iedere burger », « volgende maand ». Mots néerlandais retirés de la traduction française (« le spectacle », « le contrat », « le moyen », « le rassemblement », « les dégâts », « les environs »). Catégories traduites en français. Toutes les phrases d'exemple ont maintenant leur traduction française.
+  - Comme pour le syllabus : un terme peut être masqué ou modifié pour soi (synchronisé), et la liste peut être dupliquée pour en faire une liste personnelle. Chacun peut ajouter ses propres termes dans ses listes personnelles.
+  - Badge de carte « B1–B2 · catégorie », source « Liste B1–B2 — n° ».
+- Les termes masqués et le bouton « Restaurer » sont comptés par liste intégrée.
+- Adresse e-mail de contact retirée de la page Compte. Le message affiché si la suppression du compte est indisponible ne renvoie plus vers une adresse.
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.2 — 2026-11-04">` et `APP_VERSION = "5.2"`.
+
 ## v5.1 — 2026-11-04 (avec l'API OneClient Apps v1.2.0)
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
