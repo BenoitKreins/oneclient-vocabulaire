@@ -1,5 +1,31 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.0 — 2026-11-04 (avec l'API OneClient Apps v1.0.1)
+
+**Fichiers à envoyer dans `/outils/vocabulaire/` :**
+- `vocabulaire-index-v5.0-2026-11-04.html` → à renommer `index.html` ;
+- `vocabulaire-redirect-v5.0-2026-11-04.html` → à renommer `redirect.html` (page de retour de la connexion Microsoft, ne rien y ajouter).
+
+**Mise en ligne par GitHub (à partir de cette version) :** dépôt privé `BenoitKreins/oneclient-vocabulaire`, branche `main`. Hostinger copie le dépôt dans `public_html/outils/vocabulaire` à chaque envoi. Dans le dépôt, les fichiers portent déjà leur nom en ligne (`index.html`, `redirect.html`), et chaque version a son étiquette (`v4.2` … `v5.0`).
+
+**Supabase :** aucun changement. L'application ne l'utilise plus (arrêt prévu en phase 7).
+**Azure :** l'API `oneclient-apps-api` v1.0.1 doit être en ligne (`/api/health`).
+
+- Mode local par défaut : plus d'écran de connexion au démarrage, aucun compte n'est nécessaire pour apprendre.
+- Synchronisation facultative : Réglages > Compte > « Activer la synchronisation ». Une page Microsoft (Entra External ID) s'ouvre pour créer un compte ou se connecter avec un e-mail et un mot de passe, dans la langue de l'application.
+- Données en ligne enregistrées dans Azure Cosmos DB (Belgique), via l'API OneClient Apps. Plus de Supabase.
+- À la première activation, tout ce qui est sur l'appareil est envoyé vers le compte. Sur un appareil vide, tout est récupéré.
+- Synchronisation par lot : les changements sont envoyés environ une seconde après la modification (nouvel essai toutes les 30 secondes hors connexion). Les changements des autres appareils sont récupérés toutes les minutes quand la page est visible, et à chaque retour sur la page. Bouton « Synchroniser maintenant ».
+- État visible : point de couleur et texte (synchronisé, en attente, hors ligne, reconnexion nécessaire, erreur).
+- Protection contre le changement de compte : si un autre compte se connecte sur le même appareil, l'application demande confirmation avant de mélanger les données.
+- « Se déconnecter » arrête la synchronisation et garde les données sur l'appareil.
+- « Supprimer mes données en ligne » efface tout ce qui est enregistré en ligne pour ce compte, sur tous les appareils, et garde la copie de l'appareil. Le compte Microsoft reste ouvert (suppression sur demande à l'adresse de contact, automatisée en phase 6).
+- Mot de passe oublié : géré par la page Microsoft (« Mot de passe oublié ? »).
+- Reprise automatique de la v4 : les données Supabase déjà présentes dans ce navigateur (progression, listes, termes, réglages) sont reprises en local au premier lancement. Les anciens jetons de connexion Supabase sont effacés.
+- Une liste par défaut vide créée automatiquement n'est pas envoyée en ligne. Elle est retirée si le compte a déjà ses listes (plus de liste en double sur un nouvel appareil).
+- Adresse de contact affichée en permanence dans Réglages > Compte.
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.0 — 2026-11-04">` et `APP_VERSION = "5.0"`.
+
 ## v4.4 — 2026-10-31 (avec la fonction send-email v2.0)
 
 **Fichiers à envoyer :**

@@ -1,0 +1,6 @@
+# Vocabulaire — .htaccess v1.0 — 2026-11-04
+# Fichiers du dépôt GitHub qui ne doivent pas être lisibles en ligne.
+RedirectMatch 404 /\.git
+<FilesMatch "\.(md|yml|yaml)$">
+  Require all denied
+</FilesMatch>
