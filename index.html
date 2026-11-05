@@ -2162,7 +2162,13 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
         const items = itemsOf(US), now = Date.now(), unused = unusedAutoLists(US);
         Object.keys(items).forEach((k) => { if (unused.has(k.slice(5)) && k.startsWith("list:")) return; if (!this.outbox[k]) this.outbox[k] = { op: "upsert", ts: (US.ts && US.ts[k]) || now }; });
         this.saveOutbox();
+      } else if (!this.meta.listsResent521) {
+        // v5.2.1 : renvoyer une fois les listes, pour réparer celles qui n'étaient jamais parties (liste créée d'office)
+        const items = itemsOf(US), now = Date.now();
+        Object.keys(items).forEach((k) => { if (k.startsWith("list:") && !this.outbox[k]) this.outbox[k] = { op: "upsert", ts: (US.ts && US.ts[k]) || now }; });
+        this.saveOutbox();
       }
+      this.meta.listsResent521 = true; saveSyncMeta(this.meta);
       clearInterval(this.pullTimer);
       this.pullTimer = setInterval(() => { if (document.visibilityState === "visible") this.syncNow(); }, PULL_EVERY_MS);
       this.syncNow();
