@@ -1,5 +1,13 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.2.1 — 2026-11-05
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
+
+- Correction (présente depuis la v5.0) : la liste créée d'office au premier lancement (« Mes termes prioritaires ») n'était jamais envoyée en ligne, même après y avoir ajouté des termes. Sur un deuxième appareil, ces termes arrivaient sans leur liste et se retrouvaient rangés dans une autre liste. Cette liste est maintenant synchronisée dès son premier terme (et reste locale tant qu'elle est vide).
+- Testé par l'interface : création d'une liste, ajout d'un terme par le formulaire (y compris depuis la liste B1–B2 affichée, le terme va alors dans une liste personnelle), import par lot, modification d'un terme B1–B2, duplication de la liste B1–B2 (263 termes, modification conservée), renommage et suppression d'une liste, puis réception de l'ensemble sur un deuxième appareil.
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.2.1 — 2026-11-05">` et `APP_VERSION = "5.2.1"`.
+
 ## v5.2 — 2026-11-04
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
