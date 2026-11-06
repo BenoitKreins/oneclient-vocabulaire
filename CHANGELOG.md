@@ -1,5 +1,13 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.2.2 — 2026-11-06
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
+
+- Correction (présente depuis la v5.0) : les raccourcis clavier ne fonctionnaient plus quand le focus n'était sur aucun bouton. Entrée ne validait pas la note suggérée après une réponse tapée, Espace ne retournait pas la carte et les touches 1 à 4 ne notaient pas. Le gestionnaire des raccourcis vérifiait encore l'ancien écran de connexion, supprimé en v5.0, et s'arrêtait sur une erreur. Cette vérification est retirée.
+- Testé : mode saisie (Entrée dans le champ puis Entrée, clic sur OK puis Entrée, Entrée puis touche 3) et mode mental (Espace, puis touches 1 et 4), sans erreur dans la console. Tests de synchronisation, de listes et de réparation repassés.
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.2.2 — 2026-11-06">` et `APP_VERSION = "5.2.2"`.
+
 ## v5.2.1 — 2026-11-05
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.

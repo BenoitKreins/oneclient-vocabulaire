@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr" class="h-full bg-slate-50">
 <head>
-  <meta name="app-version" content="Vocabulaire 5.2.1 — 2026-11-05">
+  <meta name="app-version" content="Vocabulaire 5.2.2 — 2026-11-06">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vocabulaire</title>
@@ -689,7 +689,7 @@ const DutchG2P = (function () {
 if (typeof module !== "undefined") module.exports = DutchG2P;
 
 
-  const APP_VERSION = "5.2.1";
+  const APP_VERSION = "5.2.2";
   const SPEAKER_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>';
   const OFFICIAL_LIST_ID = "official";
   const B1B2_LIST_ID = "b1b2";
@@ -1605,7 +1605,6 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
       const tag = document.activeElement && document.activeElement.tagName;
       if (["INPUT", "TEXTAREA", "SELECT"].includes(tag)) { if (e.key === "Escape") document.activeElement.blur(); return; }
       if (!document.getElementById("cardModal").classList.contains("hidden") || !document.getElementById("settingsModal").classList.contains("hidden")) { if (e.key === "Escape") { closeCardModal(); closeSettingsModal(); } return; }
-      if (!document.getElementById("authScreen").classList.contains("hidden")) return;
       if (document.getElementById("view-study").classList.contains("hidden")) return;
       if (e.code === "Space") { e.preventDefault(); if (!AppState.isRevealed) revealCard(); }
       else if (e.key === "Enter" && AppState.isRevealed && AppState.suggested) { e.preventDefault(); rateCard(AppState.suggested); }
