@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr" class="h-full bg-slate-50">
 <head>
-  <meta name="app-version" content="Vocabulaire 5.2.2 — 2026-11-06">
+  <meta name="app-version" content="Vocabulaire 5.3 — 2026-11-11">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vocabulaire</title>
@@ -689,7 +689,7 @@ const DutchG2P = (function () {
 if (typeof module !== "undefined") module.exports = DutchG2P;
 
 
-  const APP_VERSION = "5.2.2";
+  const APP_VERSION = "5.3";
   const SPEAKER_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>';
   const OFFICIAL_LIST_ID = "official";
   const B1B2_LIST_ID = "b1b2";
@@ -1128,7 +1128,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
     AppState.currentListId = US.activeListId || OFFICIAL_LIST_ID;
     AppState.sessionCards = []; AppState.currentCardIndex = 0; AppState.tableLimit = 200;
     loadInitialData();
-    if (!appInitDone) { initSpeechEngine(); setupKeyboardShortcuts(); setupSwipe(); appInitDone = true; } else populateVoices();
+    if (!appInitDone) { initSpeechEngine(); setupKeyboardShortcuts(); setupSwipe(); setupDelegatedClicks(); appInitDone = true; } else populateVoices();
     document.body.classList.toggle("stats-open", !!US.prefs.statsOpen);
     hideAuthScreen();
     updateUiLanguage();
@@ -1635,11 +1635,23 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
         <td class="px-3 py-2.5 [overflow-wrap:anywhere]">${frTermView(c)}${!c.official && c.domain ? `<div class="text-[10px] text-slate-400">${esc(c.domain)}</div>` : ""}<div class="sm:hidden text-[10px] text-slate-400 mt-0.5">${c.official ? "n° " + c.n + " · " : ""}${t("box")} ${c.box || 1}</div></td>
         <td class="px-3 py-2.5 text-center hidden sm:table-cell"><span class="inline-block w-5 h-5 rounded-full text-[10px] font-bold leading-5 ${c.box === 5 ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-700"}">${c.box || 1}</span></td>
         <td class="px-2 py-2.5 text-right"><div class="flex flex-col sm:flex-row items-end sm:items-center justify-end gap-1">
-          <button onclick="editCard('${c.id}')" class="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50" title="${esc(t("act_edit"))}" aria-label="${esc(t("act_edit"))}">${ICON_EDIT}</button>
-          <button onclick="deleteCard('${c.id}')" class="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50" title="${esc(t(c.official ? "act_hide" : "act_delete"))}" aria-label="${esc(t(c.official ? "act_hide" : "act_delete"))}">${c.official ? ICON_HIDE : ICON_TRASH}</button>
+          <button data-act="edit" data-id="${esc(c.id)}" class="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50" title="${esc(t("act_edit"))}" aria-label="${esc(t("act_edit"))}">${ICON_EDIT}</button>
+          <button data-act="delete" data-id="${esc(c.id)}" class="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50" title="${esc(t(c.official ? "act_hide" : "act_delete"))}" aria-label="${esc(t(c.official ? "act_hide" : "act_delete"))}">${c.official ? ICON_HIDE : ICON_TRASH}</button>
         </div></td></tr>`;
     }).join("");
     more.classList.toggle("hidden", filtered.length <= AppState.tableLimit);
+  }
+  // Les deux écouteurs sont posés une seule fois, sur des conteneurs présents dans la page.
+  function setupDelegatedClicks() {
+    document.getElementById("cardsTableBody").addEventListener("click", onCardsTableClick);
+    document.getElementById("settingsListsContainer").addEventListener("click", onListsClick);
+  }
+  // Même principe que pour les listes : un écouteur sur le tableau, l'identifiant en attribut.
+  function onCardsTableClick(e) {
+    const b = e.target.closest("button[data-act][data-id]");
+    if (!b || !e.currentTarget.contains(b)) return;
+    const id = b.getAttribute("data-id");
+    if (b.getAttribute("data-act") === "edit") editCard(id); else deleteCard(id);
   }
   function filterCardsTable() { AppState.tableLimit = 200; renderCardsTable(); }
   function showMoreRows() { AppState.tableLimit += 400; renderCardsTable(); }
@@ -1779,13 +1791,22 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
         <div><div class="flex items-center gap-2"><span class="font-bold text-slate-900 text-xs">${esc(l.name)}</span>${l.isSystem ? `<span class="text-[10px] bg-blue-50 text-blue-700 font-semibold px-2 py-0.5 rounded">${esc(t(l.id === B1B2_LIST_ID ? "badge_builtin" : "badge_official"))}</span>` : ""}</div>
         <span class="text-[11px] text-slate-500">${count}${l.isSystem ? "" : " / " + LIST_LIMIT} ${esc(t("terms_suffix"))}${esc(hiddenInfo)}</span></div>
         <div class="flex items-center gap-1.5 flex-wrap">
-          <button onclick="selectAndShowList('${l.id}')" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold transition">${esc(t("btn_manage_terms"))}</button>
-          <button onclick="duplicateList('${l.id}')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">📑 ${esc(t("btn_duplicate"))}</button>
-          ${nHidden ? `<button onclick="restoreHidden('${l.id}')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">${esc(t("btn_restore_hidden"))}</button>` : ""}
-          ${!l.isSystem ? `<button onclick="renameList('${l.id}')" class="px-2 py-1 hover:bg-slate-100 text-slate-600 rounded-lg text-xs" title="${esc(t("btn_rename"))}">✏️</button>
-          <button onclick="deleteList('${l.id}')" class="px-2 py-1 hover:bg-rose-50 text-rose-600 rounded-lg text-xs" title="${esc(t("btn_delete"))}">🗑️</button>` : ""}
+          <button data-act="manage" data-id="${esc(l.id)}" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold transition">${esc(t("btn_manage_terms"))}</button>
+          <button data-act="duplicate" data-id="${esc(l.id)}" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">📑 ${esc(t("btn_duplicate"))}</button>
+          ${nHidden ? `<button data-act="restore" data-id="${esc(l.id)}" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">${esc(t("btn_restore_hidden"))}</button>` : ""}
+          ${!l.isSystem ? `<button data-act="rename" data-id="${esc(l.id)}" class="px-2 py-1 hover:bg-slate-100 text-slate-600 rounded-lg text-xs" title="${esc(t("btn_rename"))}">✏️</button>
+          <button data-act="delete" data-id="${esc(l.id)}" class="px-2 py-1 hover:bg-rose-50 text-rose-600 rounded-lg text-xs" title="${esc(t("btn_delete"))}">🗑️</button>` : ""}
         </div></li>`;
     }).join("");
+  }
+  // Un seul écouteur pour tous les boutons des listes : l'identifiant voyage en attribut,
+  // jamais dans du code à interpréter (voir la note sur les identifiants reçus en ligne).
+  const LIST_ACTIONS = { manage: selectAndShowList, duplicate: duplicateList, restore: restoreHidden, rename: renameList, delete: deleteList };
+  function onListsClick(e) {
+    const b = e.target.closest("button[data-act][data-id]");
+    if (!b || !e.currentTarget.contains(b)) return;
+    const fn = LIST_ACTIONS[b.getAttribute("data-act")];
+    if (fn) fn(b.getAttribute("data-id"));
   }
   function selectAndShowList(id) { setCurrentList(id); closeSettingsModal(); switchTab("manager"); }
   function setCurrentList(id) {
@@ -2031,6 +2052,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
   const SYNCED_PREF_KEYS = ["uiLang", "direction"];
   const BATCH_MAX = 450;          // l'API accepte 500 opérations par lot
   const PULL_EVERY_MS = 60000;    // sans temps réel : on vérifie chaque minute quand la page est visible
+  const PULL_MAX_PAGES = 20;      // pages de changements enchaînées par synchronisation (1 000 éléments chacune)
 
   function loadSyncMeta() { try { return Object.assign({ enabled: false, homeAccountId: null, oid: null, email: "", since: 0 }, JSON.parse(SafeStore.get(SYNC_KEY) || "{}")); } catch (e) { return { enabled: false, homeAccountId: null, oid: null, email: "", since: 0 }; } }
   function saveSyncMeta(m) { SafeStore.set(SYNC_KEY, JSON.stringify(m)); }
@@ -2076,7 +2098,16 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
   }
   function snapshotOf(st) { const items = itemsOf(st), s = {}; Object.keys(items).forEach((k) => (s[k] = JSON.stringify(items[k].data))); return s; }
 
+  // Un élément reçu du compte n'est appliqué que si son identifiant est de la forme
+  // attendue. L'API v1.3.0 l'impose déjà ; cette vérification protège les appareils
+  // des éléments écrits avant, par une version plus permissive de l'API.
+  function acceptableItemId(it) {
+    if (it.type === "settings") return it.id === "prefs";
+    if (it.type === "list") return UUID_RE.test(it.id);
+    return UUID_RE.test(it.id) || !!OFFICIAL_BY_ID[it.id]; // card, progress
+  }
   function applyItem(st, it) {
+    if (!acceptableItemId(it)) return false;
     const key = it.type + ":" + it.id, d = it.data;
     if (it.type === "list") {
       if (it.deleted) st.lists = st.lists.filter((l) => l.id !== it.id);
@@ -2101,6 +2132,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
       if (d.activeListId) st.activeListId = d.activeListId;
     }
     st.ts = st.ts || {}; st.ts[key] = it.updatedAt;
+    return true;
   }
 
   class ApiCallError extends Error { constructor(status, code) { super(code || ("HTTP " + status)); this.status = status; this.code = code; } }
@@ -2244,17 +2276,23 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
     },
 
     // ---------- réception : changements faits ailleurs depuis la dernière fois
+    // L'API renvoie au plus 1 000 éléments par appel et annonce la suite par « more ».
     async pull() {
-      const r = await this.api("GET", API_APP + "/changes?since=" + encodeURIComponent(this.meta.since || 0));
-      let changed = false;
-      (r.items || []).forEach((it) => {
-        const k = it.type + ":" + it.id, pend = this.outbox[k];
-        if (pend && pend.ts > it.updatedAt) return; // la version locale, plus récente, partira au prochain envoi
-        if (pend) delete this.outbox[k];
-        if (US.ts && US.ts[k] === it.updatedAt && !it.deleted) return; // déjà connu
-        applyItem(US, it); changed = true;
-      });
-      this.meta.since = r.since || this.meta.since || 0; saveSyncMeta(this.meta);
+      let changed = false, ignored = 0, pages = 0, more = true;
+      while (more && pages < PULL_MAX_PAGES) {
+        const r = await this.api("GET", API_APP + "/changes?since=" + encodeURIComponent(this.meta.since || 0));
+        pages++;
+        (r.items || []).forEach((it) => {
+          const k = it.type + ":" + it.id, pend = this.outbox[k];
+          if (pend && pend.ts > it.updatedAt) return; // la version locale, plus récente, partira au prochain envoi
+          if (pend) delete this.outbox[k];
+          if (US.ts && US.ts[k] === it.updatedAt && !it.deleted) return; // déjà connu
+          if (applyItem(US, it)) changed = true; else ignored++;
+        });
+        this.meta.since = r.since || this.meta.since || 0; saveSyncMeta(this.meta);
+        more = !!r.more;
+      }
+      if (ignored) console.warn("Synchro : " + ignored + " élément(s) ignoré(s), identifiant inattendu");
       if (changed) {
         // la liste vide créée d'office sur cet appareil disparaît si le compte a déjà ses listes
         const unused = unusedAutoLists(US);
@@ -2282,7 +2320,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
           if (manual) showToast(t("sync_done"));
         } catch (err) {
           if (err && err.code === "reauth") { this.setStatus("reauth"); if (manual) showToast(t("sync_reauth"), 5000); }
-          else if (isNetworkError(err) || (err && err.status === 429) || (err && err.status >= 500)) { this.setStatus("offline"); this.scheduleFlush(30000); if (manual) showToast(t("sync_offline"), 5000); }
+          else if (isNetworkError(err) || (err && err.status === 429) || (err && err.status >= 500)) { this.setStatus("offline"); this.scheduleFlush(err && err.status === 429 ? 60000 : 30000); if (manual) showToast(t("sync_offline"), 5000); }
           else { console.warn("Synchro impossible :", err); this.setStatus("error"); if (manual) showToast(t("sync_error"), 5000); }
         }
       })();
