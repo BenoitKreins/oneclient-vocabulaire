@@ -1,6 +1,19 @@
-# Vocabulaire — .htaccess v1.0 — 2026-11-04
+# Vocabulaire — .htaccess v1.1 — 2026-11-11
 # Fichiers du dépôt GitHub qui ne doivent pas être lisibles en ligne.
 RedirectMatch 404 /\.git
 <FilesMatch "\.(md|yml|yaml)$">
   Require all denied
 </FilesMatch>
+
+# En-têtes de sécurité.
+# SAMEORIGIN et frame-ancestors 'self' (jamais DENY) : la bibliothèque de connexion
+# Microsoft renouvelle les jetons dans un iframe caché qui revient sur redirect.html.
+# 'unsafe-inline' pour les scripts reste nécessaire tant que le code est dans la page ;
+# la règle bloque tout de même les scripts venus d'ailleurs.
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://oneclientapps.ciamlogin.com https://login.microsoftonline.com https://oneclient-apps-api-hucfdxe0drdbb0gt.belgiumcentral-01.azurewebsites.net; frame-src https://oneclientapps.ciamlogin.com https://login.microsoftonline.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://oneclientapps.ciamlogin.com"
+</IfModule>
