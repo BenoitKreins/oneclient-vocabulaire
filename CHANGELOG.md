@@ -1,5 +1,21 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.3 — 2026-11-11
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`). Deux fichiers changent : `index.html` et `.htaccess`.
+**API :** nécessite la v1.3.0 (déployée depuis le dépôt `oneclient-apps-api`).
+
+**Origine :** revue de sécurité et de qualité du 11 novembre 2026 (constats C1, C2, C3, C4).
+
+- **Identifiants reçus vérifiés** (C2) : un élément venu du compte dont l'identifiant n'est pas un UUID (ni un terme des listes fournies) est ignoré au lieu d'être rangé dans les données locales. Protège les appareils des éléments écrits avant que l'API ne contrôle les identifiants.
+- **Boutons sans code en ligne** (C2) : les boutons du tableau des termes et de la liste des listes passent leur identifiant en attribut `data-id`, avec un seul écouteur par conteneur, au lieu de l'insérer dans un `onclick`. Supprime la possibilité d'injection par identifiant, et rapproche l'application d'une politique de sécurité du contenu sans `unsafe-inline`.
+- **Choix du compte à l'activation** (C3) : la connexion demande `prompt=select_account`. Microsoft montre toujours quel compte est utilisé, au lieu de reprendre en silence une session déjà ouverte dans le navigateur. Une seule fois par appareil.
+- **Changements par pages** (C1) : la synchronisation suit le champ `more` de l'API (au plus 20 pages par passage, 1 000 éléments chacune). Un refus 429 (trop d'appels) fait patienter 60 secondes au lieu de 30.
+- **En-têtes de sécurité** (C4), dans `.htaccess` v1.1 : `nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`, `Permissions-Policy` et une politique de sécurité du contenu. `SAMEORIGIN` et `frame-ancestors 'self'` plutôt que `DENY` : la bibliothèque Microsoft renouvelle les jetons dans un iframe caché qui revient sur `redirect.html`.
+- Version visible dans le fichier : `<meta name="app-version" content="Vocabulaire 5.3 — 2026-11-11">` et `APP_VERSION = "5.3"`.
+
+**À tester après la mise en ligne** (les en-têtes ne peuvent pas être vérifiés hors ligne) : connexion et synchronisation, lecture audio, puis laisser la page ouverte plus d'une heure pour contrôler le renouvellement silencieux des jetons. En cas d'échec de la connexion, retirer uniquement la ligne `Content-Security-Policy` du `.htaccess` et garder les autres en-têtes. Vérifier aussi `curl -I https://oneclient.be/outils/vocabulaire/` et que `.git/config` et `CHANGELOG.md` répondent toujours 403 ou 404.
+
 ## v5.2.2 — 2026-11-06
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `index.html` change.
