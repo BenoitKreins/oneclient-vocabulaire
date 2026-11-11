@@ -2402,7 +2402,9 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
     if (Cloud.unavailable || !Cloud.msal) return msg("accLocalMsg", Cloud.unavailable ? t("sync_needs_web") : t("cloud_unavailable") + errCode(Cloud.initError));
     persist();
     try {
-      await Cloud.msal.loginRedirect({ scopes: [AUTH_CFG.scope], extraQueryParameters: msLocale() });
+      // prompt « select_account » : Microsoft montre toujours quel compte est utilisé,
+      // au lieu de reprendre en silence une session déjà ouverte dans le navigateur.
+      await Cloud.msal.loginRedirect({ scopes: [AUTH_CFG.scope], prompt: "select_account", extraQueryParameters: msLocale() });
     } catch (e) { console.warn(e); msg("accLocalMsg", t("cloud_unavailable") + errCode(e)); }
   }
   async function reconnect() {
