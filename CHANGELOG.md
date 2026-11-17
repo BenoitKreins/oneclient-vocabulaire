@@ -1,5 +1,15 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.3.1 — 2026-11-17
+
+**Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `.htaccess` change (v1.2). `index.html` est inchangé et affiche toujours « Vocabulaire 5.3 ».
+**API :** aucun changement.
+
+- **Correction de la politique de sécurité du contenu** (présente depuis la v5.3, `.htaccess` v1.1) : `frame-src` n'autorisait que les domaines Microsoft, sans `'self'`. Le cadre caché de la bibliothèque Microsoft (renouvellement silencieux des jetons, `ssoSilent`) revient sur `redirect.html`, donc sur le site lui-même ; le navigateur bloquait ce retour (« Framing … violates the following Content Security Policy directive: frame-src … ») et l'appel échouait en `timed_out` après une dizaine de secondes. Conséquence probable : « reconnexion nécessaire » plus fréquente que prévu à l'expiration du jeton de rafraîchissement. `frame-src` devient `'self' https://oneclientapps.ciamlogin.com https://login.microsoftonline.com`. `frame-ancestors 'self'` et `X-Frame-Options: SAMEORIGIN` restent inchangés.
+- Constaté le 17/11/2026 sur l'application sœur examen-neerlandais.be (même règle, corrigée dans son `.htaccess` v1.4).
+
+**À tester après la mise en ligne :** `curl -I https://oneclient.be/outils/vocabulaire/` doit montrer `frame-src 'self'`. Dans le navigateur, connecté, appeler depuis la console `Cloud.msal.ssoSilent({ scopes: [AUTH_CFG.scope] })` : la réponse doit arriver vite (succès ou `login_required`, pas `timed_out`), sans erreur « Framing … violates … frame-src » dans la console.
+
 ## v5.3 — 2026-11-11
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`). Deux fichiers changent : `index.html` et `.htaccess`.
