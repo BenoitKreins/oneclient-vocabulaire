@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr" class="h-full bg-slate-50">
 <head>
-  <meta name="app-version" content="Vocabulaire 5.3 — 2026-11-11">
+  <meta name="app-version" content="Vocabulaire 5.4 — 2026-11-21">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vocabulaire</title>
@@ -66,6 +66,24 @@
   </header>
 
   <main class="flex-1 overflow-y-auto p-4 md:p-6 max-w-5xl mx-auto w-full">
+
+    <!-- ================= BANDEAU DE MIGRATION (v5.4) : nouvelle version sur examen-neerlandais.be ================= -->
+    <div id="migrationBanner" class="hidden mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900 shadow-sm" role="region" aria-labelledby="migrationTitle">
+      <div class="flex items-start gap-3">
+        <div class="flex-1 min-w-0">
+          <p id="migrationTitle" class="font-bold" data-i18n="mig_title">Une nouvelle version est disponible : examen-neerlandais.be</p>
+          <p class="mt-1" data-i18n="mig_intro">Vocabulaire continue, et s'ajoute un module pour s'entraîner à l'oral. Tes données te suivent :</p>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li><span class="font-bold" data-i18n="mig_account_b">avec un compte</span> <span data-i18n="mig_account">: connecte-toi sur le nouveau site avec le même compte, tout est repris ;</span></li>
+            <li><span class="font-bold" data-i18n="mig_local_b">sans compte</span> <span data-i18n="mig_local">: ici, menu ⚙ → Sauvegarde → Exporter ma sauvegarde, puis sur le nouveau site, menu ⚙ → Sauvegarde → Importer une sauvegarde.</span></li>
+          </ul>
+          <p class="mt-1" data-i18n="mig_shared">C'est le même compte sur les deux sites : tes données sont stockées en ligne, en dehors des applications. Inutile de supprimer ton compte pour migrer ; si tu le supprimes, il est supprimé de toutes les applications.</p>
+          <p class="mt-1 font-semibold" data-i18n="mig_close">Cette ancienne version fermera le 15 décembre 2026.</p>
+          <a id="migrationLink" href="https://examen-neerlandais.be/" target="_blank" rel="noopener" class="inline-block mt-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold" data-i18n="mig_cta">Découvrir la nouvelle version</a>
+        </div>
+        <button type="button" id="migrationCloseBtn" onclick="dismissMigrationBanner()" class="flex-shrink-0 text-blue-800 hover:text-slate-900 text-lg leading-tight px-1" aria-label="Fermer" title="Fermer">×</button>
+      </div>
+    </div>
 
     <!-- ================= ENTRAÎNEMENT ================= -->
     <section id="view-study" class="space-y-4">
@@ -689,7 +707,7 @@ const DutchG2P = (function () {
 if (typeof module !== "undefined") module.exports = DutchG2P;
 
 
-  const APP_VERSION = "5.3";
+  const APP_VERSION = "5.4";
   const SPEAKER_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>';
   const OFFICIAL_LIST_ID = "official";
   const B1B2_LIST_ID = "b1b2";
@@ -715,6 +733,11 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
       search_placeholder: "Rechercher (NL, FR, n°)...", btn_add_card: "Ajouter un terme", th_nl: "Terme NL", th_fr: "Terme FR", th_box: "Box", th_actions: "Actions",
       table_empty: "Aucun terme trouvé.", btn_show_more: "Afficher plus",
       modal_tab_lists: "Listes", modal_tab_import: "Import par lot", modal_tab_audio: "Audio", modal_tab_sync: "Sauvegarde",
+      mig_title: "Une nouvelle version est disponible : examen-neerlandais.be", mig_intro: "Vocabulaire continue, et s'ajoute un module pour s'entraîner à l'oral. Tes données te suivent :",
+      mig_account_b: "avec un compte", mig_account: ": connecte-toi sur le nouveau site avec le même compte, tout est repris ;",
+      mig_local_b: "sans compte", mig_local: ": ici, menu ⚙ → Sauvegarde → Exporter ma sauvegarde, puis sur le nouveau site, menu ⚙ → Sauvegarde → Importer une sauvegarde.",
+      mig_shared: "C'est le même compte sur les deux sites : tes données sont stockées en ligne, en dehors des applications. Inutile de supprimer ton compte pour migrer ; si tu le supprimes, il est supprimé de toutes les applications.",
+      mig_close: "Cette ancienne version fermera le 15 décembre 2026.", mig_cta: "Découvrir la nouvelle version", mig_dismiss: "Fermer",
       lists_create_title: "Créer une nouvelle liste", lists_existing_title: "Listes existantes :", lists_placeholder: "Nom de la nouvelle liste...",
       btn_create: "Créer", btn_duplicate: "Dupliquer", btn_rename: "Renommer", btn_delete: "Supprimer", btn_manage_terms: "Voir les termes ➔",
       btn_restore_hidden: "Restaurer les termes masqués", prompt_rename: "Nouveau nom de la liste :", toast_list_renamed: "Liste renommée.",
@@ -754,12 +777,12 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
       acc_enable_sync: "Activer la synchronisation", acc_enable_note: "Une page Microsoft s'ouvre pour créer ton compte ou te connecter avec ton e-mail et un mot de passe. Aucune autre information n'est demandée.",
       acc_synced_as: "Synchronisé avec :", acc_reconnect: "Se reconnecter", acc_pw_note: "Pour changer ton mot de passe : déconnecte-toi, puis choisis « Mot de passe oublié ? » sur la page de connexion Microsoft.",
       acc_delete_online_title: "Supprimer mes données en ligne", acc_delete_online_btn: "Supprimer mes données en ligne",
-      acc_delete_online_desc: "Efface définitivement ta progression, tes listes, tes termes ajoutés et tes réglages enregistrés en ligne, pour tous tes appareils. La copie de cet appareil est conservée. Ton compte de connexion reste ouvert.",
-      acc_delete_account_btn: "Supprimer mon compte", acc_delete_account_desc: "Supprimer mon compte efface aussi ton compte de connexion Microsoft (adresse e-mail et mot de passe). Tu peux continuer à apprendre sur cet appareil, sans compte.",
-      confirm_delete_account: "Supprimer définitivement tes données en ligne ET ton compte de connexion ? Pour synchroniser à nouveau, il faudra recréer un compte. Cette action est irréversible.",
+      acc_delete_online_desc: "Efface définitivement ta progression, tes listes, tes termes ajoutés et tes réglages enregistrés en ligne, pour tous tes appareils. La copie de cet appareil est conservée. Ton compte de connexion reste ouvert. Ton compte et tes données en ligne sont communs à Vocabulaire et à examen-neerlandais.be : ils seront effacés pour les deux.",
+      acc_delete_account_btn: "Supprimer mon compte", acc_delete_account_desc: "Supprimer mon compte efface aussi ton compte de connexion Microsoft (adresse e-mail et mot de passe). Tu peux continuer à apprendre sur cet appareil, sans compte. Le compte est commun à Vocabulaire et à examen-neerlandais.be : il sera supprimé pour les deux. Inutile de le supprimer pour passer à la nouvelle version.",
+      confirm_delete_account: "Supprimer définitivement tes données en ligne ET ton compte de connexion ? Le compte et les données seront supprimés aussi sur examen-neerlandais.be. Pour synchroniser à nouveau, il faudra recréer un compte. Cette action est irréversible.",
       toast_account_deleted: "Ton compte et tes données en ligne ont été supprimés. La copie de cet appareil est conservée.",
       acc_delete_account_unavailable: "La suppression du compte n'est pas disponible pour le moment. Réessaie plus tard.",
-      confirm_delete_online: "Supprimer définitivement toutes tes données en ligne ? Tes autres appareils ne pourront plus les récupérer. Cette action est irréversible.",
+      confirm_delete_online: "Supprimer définitivement toutes tes données en ligne ? Elles seront effacées aussi sur examen-neerlandais.be, et tes autres appareils ne pourront plus les récupérer. Cette action est irréversible.",
       acc_switch_confirm: "Cet appareil contient les données d'un autre compte. Les remplacer par celles de {email} ? (Les données actuelles de cet appareil seront effacées.)",
       toast_sync_enabled: "Synchronisation activée : ta progression est maintenant enregistrée dans ton compte.", toast_sync_disabled: "Synchronisation arrêtée sur cet appareil. Tes données restent ici.",
       toast_online_deleted: "Tes données en ligne ont été supprimées. La copie de cet appareil est conservée.", toast_migrated_v4: "Tes données de la version précédente ont été reprises sur cet appareil. Active la synchronisation pour les retrouver sur tes autres appareils.",
@@ -812,6 +835,11 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
       search_placeholder: "Zoeken (NL, FR, nr.)...", btn_add_card: "Term toevoegen", th_nl: "NL term", th_fr: "FR term", th_box: "Vak", th_actions: "Acties",
       table_empty: "Geen termen gevonden.", btn_show_more: "Meer tonen",
       modal_tab_lists: "Lijsten", modal_tab_import: "Bulkimport", modal_tab_audio: "Audio", modal_tab_sync: "Back-up",
+      mig_title: "Er is een nieuwe versie: examen-neerlandais.be", mig_intro: "Woordenschat blijft, en er komt een module bij om mondeling te oefenen. Je gegevens gaan mee:",
+      mig_account_b: "met een account", mig_account: ": meld je op de nieuwe site aan met hetzelfde account, alles wordt overgenomen;",
+      mig_local_b: "zonder account", mig_local: ": hier menu ⚙ → Back-up → Back-up exporteren, daarna op de nieuwe site menu ⚙ → Back-up → Back-up importeren.",
+      mig_shared: "Het is hetzelfde account op beide sites: je gegevens worden online bewaard, buiten de apps. Je hoeft je account niet te verwijderen om over te stappen; verwijder je het, dan verdwijnt het uit alle apps.",
+      mig_close: "Deze oude versie sluit op 15 december 2026.", mig_cta: "Nieuwe versie ontdekken", mig_dismiss: "Sluiten",
       lists_create_title: "Nieuwe lijst aanmaken", lists_existing_title: "Bestaande lijsten:", lists_placeholder: "Naam van de nieuwe lijst...",
       btn_create: "Aanmaken", btn_duplicate: "Dupliceren", btn_rename: "Hernoemen", btn_delete: "Verwijderen", btn_manage_terms: "Termen bekijken ➔",
       btn_restore_hidden: "Verborgen termen herstellen", prompt_rename: "Nieuwe naam van de lijst:", toast_list_renamed: "Lijst hernoemd.",
@@ -851,12 +879,12 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
       acc_enable_sync: "Synchronisatie inschakelen", acc_enable_note: "Er opent een Microsoft-pagina om je account aan te maken of je aan te melden met je e-mailadres en een wachtwoord. Er wordt geen andere informatie gevraagd.",
       acc_synced_as: "Gesynchroniseerd met:", acc_reconnect: "Opnieuw aanmelden", acc_pw_note: "Je wachtwoord wijzigen: meld je af en kies daarna « Wachtwoord vergeten? » op de aanmeldpagina van Microsoft.",
       acc_delete_online_title: "Mijn online gegevens verwijderen", acc_delete_online_btn: "Mijn online gegevens verwijderen",
-      acc_delete_online_desc: "Verwijdert definitief je voortgang, je lijsten, je toegevoegde termen en je instellingen die online bewaard zijn, voor al je toestellen. De kopie op dit toestel blijft behouden. Je aanmeldaccount blijft bestaan.",
-      acc_delete_account_btn: "Mijn account verwijderen", acc_delete_account_desc: "Hiermee verwijder je ook je Microsoft-aanmeldaccount (e-mailadres en wachtwoord). Je kunt op dit toestel blijven leren, zonder account.",
-      confirm_delete_account: "Je online gegevens ÉN je aanmeldaccount definitief verwijderen? Om opnieuw te synchroniseren moet je een nieuw account aanmaken. Dit kan niet ongedaan gemaakt worden.",
+      acc_delete_online_desc: "Verwijdert definitief je voortgang, je lijsten, je toegevoegde termen en je instellingen die online bewaard zijn, voor al je toestellen. De kopie op dit toestel blijft behouden. Je aanmeldaccount blijft bestaan. Je account en je online gegevens zijn gemeenschappelijk voor Woordenschat en examen-neerlandais.be: ze worden voor allebei verwijderd.",
+      acc_delete_account_btn: "Mijn account verwijderen", acc_delete_account_desc: "Hiermee verwijder je ook je Microsoft-aanmeldaccount (e-mailadres en wachtwoord). Je kunt op dit toestel blijven leren, zonder account. Het account is gemeenschappelijk voor Woordenschat en examen-neerlandais.be: het wordt voor allebei verwijderd. Voor de overstap naar de nieuwe versie hoef je het niet te verwijderen.",
+      confirm_delete_account: "Je online gegevens ÉN je aanmeldaccount definitief verwijderen? Het account en de gegevens worden ook op examen-neerlandais.be verwijderd. Om opnieuw te synchroniseren moet je een nieuw account aanmaken. Dit kan niet ongedaan gemaakt worden.",
       toast_account_deleted: "Je account en je online gegevens zijn verwijderd. De kopie op dit toestel blijft behouden.",
       acc_delete_account_unavailable: "Het verwijderen van je account is momenteel niet beschikbaar. Probeer het later opnieuw.",
-      confirm_delete_online: "Al je online gegevens definitief verwijderen? Je andere toestellen kunnen ze niet meer ophalen. Dit kan niet ongedaan gemaakt worden.",
+      confirm_delete_online: "Al je online gegevens definitief verwijderen? Ze worden ook op examen-neerlandais.be gewist, en je andere toestellen kunnen ze niet meer ophalen. Dit kan niet ongedaan gemaakt worden.",
       acc_switch_confirm: "Dit toestel bevat de gegevens van een ander account. Vervangen door die van {email}? (De huidige gegevens op dit toestel worden gewist.)",
       toast_sync_enabled: "Synchronisatie ingeschakeld: je voortgang wordt nu in je account bewaard.", toast_sync_disabled: "Synchronisatie gestopt op dit toestel. Je gegevens blijven hier.",
       toast_online_deleted: "Je online gegevens zijn verwijderd. De kopie op dit toestel blijft behouden.", toast_migrated_v4: "Je gegevens van de vorige versie zijn op dit toestel overgenomen. Schakel synchronisatie in om ze op je andere toestellen terug te vinden.",
@@ -1100,10 +1128,19 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
   }
 
   let appInitDone = false;
+  // Bandeau de migration (v5.4) : refermable ; le choix est gardé sur l'appareil. Changer MIGRATION_BANNER_ID le fait revenir.
+  const MIGRATION_BANNER_KEY = "learnvocabulary_migration_banner", MIGRATION_BANNER_ID = "2026-11-21b";
+  function showMigrationBanner() {
+    const el = document.getElementById("migrationBanner"); if (!el) return;
+    el.classList.toggle("hidden", SafeStore.get(MIGRATION_BANNER_KEY) === MIGRATION_BANNER_ID);
+    const b = document.getElementById("migrationCloseBtn"); b.setAttribute("aria-label", t("mig_dismiss")); b.title = t("mig_dismiss");
+  }
+  function dismissMigrationBanner() { SafeStore.set(MIGRATION_BANNER_KEY, MIGRATION_BANNER_ID); document.getElementById("migrationBanner").classList.add("hidden"); }
   function startApp() {
     const gl = SafeStore.get("learnvocabulary_ui_lang");
     if (gl === "nl" || gl === "fr") AppState.uiLang = gl;
     updateUiLanguage();
+    showMigrationBanner();
     document.addEventListener("click", (e) => { if (!e.target.closest("#gearDropdownMenu") && !e.target.closest("#gearMenuBtn")) closeGearMenu(); });
     const imported = importPreviousVersion();
     bootUser({ id: LOCAL_UID, email: loadSyncMeta().enabled ? loadSyncMeta().email : "" });
@@ -1156,6 +1193,7 @@ if (typeof module !== "undefined") module.exports = DutchG2P;
     const lang = AppState.uiLang;
     document.documentElement.lang = lang;
     document.title = t("app_name");
+    const mb = document.getElementById("migrationCloseBtn"); if (mb) { mb.setAttribute("aria-label", t("mig_dismiss")); mb.title = t("mig_dismiss"); }
     document.querySelectorAll(".app-logo").forEach((el) => (el.textContent = t("app_letter")));
     document.querySelectorAll(".lang-fr").forEach((el) => (el.className = "lang-fr " + (lang === "fr" ? "text-blue-700" : "text-slate-400 font-normal")));
     document.querySelectorAll(".lang-nl").forEach((el) => (el.className = "lang-nl " + (lang === "nl" ? "text-blue-700" : "text-slate-400 font-normal")));
