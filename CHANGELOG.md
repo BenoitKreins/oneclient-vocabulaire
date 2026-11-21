@@ -1,5 +1,14 @@
 # Vocabulaire / Woordenschat — journal des changements
 
+## v5.4 — 2026-11-21
+
+**Mise en ligne :** par GitHub (fusion dans `main`, copie automatique par Hostinger). `index.html` affiche « Vocabulaire 5.4 ».
+
+- **Bandeau de migration** en haut de l'application (FR et NL) : la nouvelle version est sur examen-neerlandais.be (vocabulaire et module oral) ; les données suivent, avec un compte (même compte sur le nouveau site) ou sans compte (Sauvegarde → Exporter ici, puis Importer là-bas) ; cette version fermera le 15 décembre 2026. Bouton « Découvrir la nouvelle version ».
+- Refermable ; le choix est gardé sur l'appareil (`learnvocabulary_migration_banner`). Pour le faire réapparaître après un changement de texte, changer `MIGRATION_BANNER_ID`.
+- Aucune autre modification. Seules des classes déjà présentes dans la feuille de style intégrée sont utilisées.
+- Vérifié dans un navigateur (Chromium, 420 px) : bandeau affiché, traduction NL, fermeture gardée après rechargement, aucune erreur.
+
 ## v5.3.1 — 2026-11-17
 
 **Mise en ligne :** par GitHub (dépôt `oneclient-vocabulaire`), seul `.htaccess` change (v1.2). `index.html` est inchangé et affiche toujours « Vocabulaire 5.3 ».
